@@ -1,0 +1,102 @@
+bundle: kubernetes
+applications:
+  grafana-k8s:
+    charm: grafana-k8s
+    channel: 1/stable
+    revision: 151
+    base: ubuntu@20.04/stable
+    resources:
+      grafana-image: 71
+      litestream-image: 46
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  mimir:
+    charm: mimir-coordinator-k8s
+    channel: 2/edge
+    revision: 62
+    resources:
+      nginx-image: 15
+      nginx-prometheus-exporter-image: 4
+    scale: 1
+    options:
+      max_global_exemplars_per_user: 1000000
+    constraints: arch=amd64
+    trust: true
+  mimir-backend:
+    charm: mimir-worker-k8s
+    channel: 2/edge
+    revision: 55
+    resources:
+      mimir-image: 16
+    scale: 1
+    options:
+      role-backend: true
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+      recovery-data: kubernetes,1,1024M
+    trust: true
+  mimir-read:
+    charm: mimir-worker-k8s
+    channel: 2/edge
+    revision: 55
+    resources:
+      mimir-image: 16
+    scale: 1
+    options:
+      role-read: true
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+      recovery-data: kubernetes,1,1024M
+    trust: true
+  mimir-s3-integrator:
+    charm: s3-integrator
+    channel: 2/edge
+    revision: 157
+    scale: 1
+    options:
+      bucket: mimir
+      credentials: secret:d2fqdunmp25c76c2gpg0
+      endpoint: http://10.181.160.194:8080
+    constraints: arch=amd64
+    trust: true
+  mimir-write:
+    charm: mimir-worker-k8s
+    channel: 2/edge
+    revision: 55
+    resources:
+      mimir-image: 16
+    scale: 1
+    options:
+      role-write: true
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+      recovery-data: kubernetes,1,1024M
+    trust: true
+  opentelemetry-collector-k8s:
+    charm: opentelemetry-collector-k8s
+    channel: 2/edge
+    revision: 48
+    resources:
+      opentelemetry-collector-image: 5
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+relations:
+- - mimir:s3
+  - mimir-s3-integrator:s3-credentials
+- - mimir:mimir-cluster
+  - mimir-backend:mimir-cluster
+- - mimir:mimir-cluster
+  - mimir-read:mimir-cluster
+- - mimir:mimir-cluster
+  - mimir-write:mimir-cluster
+- - mimir:receive-remote-write
+  - opentelemetry-collector-k8s:send-remote-write
+- - mimir:grafana-source
+  - grafana-k8s:grafana-source

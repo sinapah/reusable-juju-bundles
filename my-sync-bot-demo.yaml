@@ -1,0 +1,26 @@
+bundle: kubernetes
+applications:
+  prom:
+    charm: prometheus-k8s
+    channel: 2/edge
+    revision: 257
+    resources:
+      prometheus-image: 151
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  prom-scrape:
+    charm: prometheus-scrape-target-k8s
+    channel: 1/edge
+    revision: 39
+    base: ubuntu@20.04/stable
+    scale: 1
+    options:
+      targets: 10.181.160.194:3000
+    constraints: arch=amd64
+    trust: true
+relations:
+- - prom:metrics-endpoint
+  - prom-scrape:metrics-endpoint

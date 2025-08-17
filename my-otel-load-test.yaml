@@ -1,0 +1,35 @@
+bundle: kubernetes
+applications:
+  otel:
+    charm: opentelemetry-collector-k8s
+    channel: 2/edge
+    revision: 69
+    resources:
+      opentelemetry-collector-image: 8
+    scale: 1
+    options:
+      cpu: "2"
+      memory: 4Gi
+      queue_size: 10000
+    constraints: arch=amd64
+    storage:
+      persisted: kubernetes,1,1024M
+    trust: true
+  otel2:
+    charm: opentelemetry-collector-k8s
+    channel: 2/edge
+    revision: 74
+    resources:
+      opentelemetry-collector-image: 9
+    scale: 1
+    options:
+      cpu: "4"
+      memory: 8Gi
+      queue_size: 10000
+    constraints: arch=amd64
+    storage:
+      persisted: kubernetes,1,1024M
+    trust: true
+relations:
+- - otel:send-loki-logs
+  - otel2:receive-loki-logs
