@@ -1,0 +1,2 @@
+ElapsedTime,QueueSize,otel-0_CPU,otel-0_MEM,otel2-0_CPU,otel2-0_MEM
+00:01,0,10m,208Mi,8m,184Mi
