@@ -6,7 +6,7 @@ from datetime import datetime
 DURATION_MINUTES = 10
 INTERVAL_SECONDS = 15
 TOTAL_ITERATIONS = (DURATION_MINUTES * 60) // INTERVAL_SECONDS
-LOGFILE = 'metrics_log.csv'
+LOGFILE = 'ten_vus.csv'
 
 # Helper function to run shell commands and get output
 def run_command(command):
