@@ -1,0 +1,70 @@
+bundle: kubernetes
+applications:
+  loki:
+    charm: loki-coordinator-k8s
+    channel: 1/stable
+    revision: 29
+    resources:
+      nginx-image: 6
+      nginx-prometheus-exporter-image: 3
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  loki-backend:
+    charm: loki-worker-k8s
+    channel: 2/edge
+    revision: 48
+    resources:
+      loki-image: 3
+    scale: 1
+    options:
+      role-backend: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  loki-read:
+    charm: loki-worker-k8s
+    channel: 2/edge
+    revision: 48
+    resources:
+      loki-image: 3
+    scale: 1
+    options:
+      role-read: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  loki-write:
+    charm: loki-worker-k8s
+    channel: 2/edge
+    revision: 48
+    resources:
+      loki-image: 3
+    scale: 1
+    options:
+      role-write: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  s3:
+    charm: s3-integrator
+    channel: 2/edge
+    revision: 157
+    scale: 1
+    options:
+      bucket: loki
+      credentials: secret:d1rs4mnmp25c77tka1e0
+      endpoint: http://10.181.160.194:8080
+    constraints: arch=amd64
+relations:
+- - loki:s3
+  - s3:s3-credentials
+- - loki:loki-cluster
+  - loki-read:loki-cluster
+- - loki:loki-cluster
+  - loki-write:loki-cluster
+- - loki:loki-cluster
+  - loki-backend:loki-cluster
