@@ -2,6 +2,7 @@ import subprocess
 import re
 import threading
 import time
+import sys
 
 vus_samples = []
 queue_sizes = []
@@ -56,6 +57,13 @@ def get_pod_resources():
             if otel2_mem is not None:
                 otel2_mems.append(otel2_mem)
 
+if len(sys.argv) != 3:
+    print("Usage: python3 script.py <path_to_k6_binary> <path_to_k6_script>")
+    sys.exit(1)
+
+k6_binary = sys.argv[1]
+k6_script = sys.argv[2]
+
 queue_thread = threading.Thread(target=poll_queue_size)
 resources_thread = threading.Thread(target=get_pod_resources)
 
@@ -63,7 +71,7 @@ queue_thread.start()
 resources_thread.start()
 
 proc = subprocess.Popen(
-    ["/home/ubuntu/repos/opentelemetry-collector-k8s-k6-load-tests/k6", "run", "/home/ubuntu/repos/opentelemetry-collector-k8s-k6-load-tests/scripts/constant-arrival-rate-scenario.js"],
+    [k6_binary, "run", k6_script],
     stdout=subprocess.PIPE,
     stderr=subprocess.STDOUT,
     universal_newlines=True
