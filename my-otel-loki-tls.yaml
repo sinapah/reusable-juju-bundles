@@ -1,0 +1,46 @@
+bundle: kubernetes
+applications:
+  loki:
+    charm: loki-k8s
+    channel: 2/edge
+    revision: 203
+    resources:
+      loki-image: 101
+      node-exporter-image: 4
+    scale: 1
+    options:
+      cpu: "4"
+      memory: 8Gi
+    constraints: arch=amd64
+    storage:
+      active-index-directory: kubernetes,1,1024M
+      loki-chunks: kubernetes,1,1024M
+    trust: true
+  otel:
+    charm: opentelemetry-collector-k8s
+    channel: 2/edge
+    revision: 69
+    resources:
+      opentelemetry-collector-image: 8
+    scale: 1
+    options:
+      cpu: "2"
+      memory: 4Gi
+      queue_size: 10000
+    constraints: arch=amd64
+    storage:
+      persisted: kubernetes,1,1024M
+    trust: true
+  self-signed-certificates:
+    charm: self-signed-certificates
+    channel: 1/stable
+    revision: 317
+    scale: 1
+    constraints: arch=amd64
+relations:
+- - otel:send-loki-logs
+  - loki:logging
+- - self-signed-certificates:certificates
+  - loki:certificates
+- - self-signed-certificates:send-ca-cert
+  - otel:receive-ca-cert
