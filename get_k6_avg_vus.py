@@ -11,6 +11,10 @@ otel0_cpus = []
 otel0_mems = []
 otel2_cpus = []
 otel2_mems = []
+loki0_cpus = []
+loki0_mems = []
+loki1_cpus = []
+loki1_mems = []
 
 QUEUE_POLL_INTERVAL = 10 # Running the kubectl top command every 10 seconds
 running = True
@@ -45,18 +49,36 @@ def get_pod_resources():
             elif 'otel2-0' in line:
                 parts = line.split()
                 otel2_cpu, otel2_mem = parts[1], parts[2]
-            if otel0_cpu is not None:
-                otel0_cpus.append(otel0_cpu)
+            elif 'loki-0' in line:
+                parts = line.split()
+                loki0_cpu, loki0_mem = parts[1], parts[2]
+            elif 'loki-1' in line:
+                parts = line.split()
+                loki1_cpu, loki1_mem = parts[1], parts[2]
 
-            if otel0_mem is not None:
-                otel0_mems.append(otel0_mem)
+        if otel0_cpu is not None:
+            otel0_cpus.append(otel0_cpu)
 
-            if otel2_cpu is not None:
-                otel2_cpus.append(otel2_cpu)
+        if otel0_mem is not None:
+            otel0_mems.append(otel0_mem)
 
-            if otel2_mem is not None:
-                otel2_mems.append(otel2_mem)
+        if otel2_cpu is not None:
+            otel2_cpus.append(otel2_cpu)
 
+        if otel2_mem is not None:
+            otel2_mems.append(otel2_mem)
+
+        if loki0_cpu is not None:
+            loki0_cpus.append(loki0_cpu)
+        
+        if loki0_mem is not None:
+            loki0_mems.append(loki0_mem)
+        
+        if loki1_cpu is not None:
+            loki1_cpus.append(loki1_cpu)
+        
+        if loki1_mem is not None:
+            loki1_mems.append(loki1_mem)
 if len(sys.argv) != 3:
     print("Usage: python3 script.py <path_to_k6_binary> <path_to_k6_script>")
     sys.exit(1)
@@ -129,3 +151,27 @@ if otel2_mems:
     avg_otel2_mem = sum(parsed_otel2_mems) / len(parsed_otel2_mems)
     print(f"Average Otel 2 MEM: {avg_otel2_mem:.2f} Mi")
     print(f"Max Otel 2 MEM: {max(parsed_otel2_mems)} Mi")
+
+if loki0_cpus:
+    parsed_loki0_cpus = [parse_cpu(cpu) for cpu in loki0_cpus]
+    avg_loki0_cpu = sum(parsed_loki0_cpus) / len(parsed_loki0_cpus)
+    print(f"Average Loki 0 CPU: {avg_loki0_cpu:.2f} millicores")
+    print(f"Max Loki 0 CPU: {max(parsed_loki0_cpus):.2f} millicores")
+
+if loki0_mems:
+    parsed_loki0_mems = [parse_mem(mem) for mem in loki0_mems]
+    avg_loki0_mem = sum(parsed_loki0_mems) / len(parsed_loki0_mems)
+    print(f"Average Loki 0 MEM: {avg_loki0_mem:.2f} Mi")
+    print(f"Max Loki 0 MEM: {max(parsed_loki0_mems)} Mi")
+
+if loki1_cpus:
+    parsed_loki1_cpus = [parse_cpu(cpu) for cpu in loki1_cpus]
+    avg_loki1_cpu = sum(parsed_loki1_cpus) / len(parsed_loki1_cpus)
+    print(f"Average Loki 1 CPU: {avg_loki1_cpu:.2f} millicores")
+    print(f"Max Loki 1 CPU: {max(parsed_loki1_cpus):.2f} millicores")
+
+if loki1_mems:
+    parsed_loki1_mems = [parse_mem(mem) for mem in loki1_mems]
+    avg_loki1_mem = sum(parsed_loki1_mems) / len(parsed_loki1_mems)
+    print(f"Average Loki 1 MEM: {avg_loki1_mem:.2f} Mi")
+    print(f"Max Loki 1 MEM: {max(parsed_loki1_mems)} Mi")

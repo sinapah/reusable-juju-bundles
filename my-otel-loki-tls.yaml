@@ -1,5 +1,15 @@
 bundle: kubernetes
 applications:
+  grafana-k8s:
+    charm: grafana-k8s
+    channel: 1/stable
+    revision: 151
+    base: ubuntu@20.04/stable
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
   loki:
     charm: loki-k8s
     channel: 2/edge
@@ -7,7 +17,7 @@ applications:
     resources:
       loki-image: 101
       node-exporter-image: 4
-    scale: 1
+    scale: 2
     options:
       cpu: "4"
       memory: 8Gi
@@ -26,7 +36,7 @@ applications:
     options:
       cpu: "2"
       memory: 4Gi
-      queue_size: 10000
+      queue_size: 1000
     constraints: arch=amd64
     storage:
       persisted: kubernetes,1,1024M
@@ -44,3 +54,7 @@ relations:
   - loki:certificates
 - - self-signed-certificates:send-ca-cert
   - otel:receive-ca-cert
+- - self-signed-certificates:send-ca-cert
+  - grafana-k8s:receive-ca-cert
+- - grafana-k8s:grafana-source
+  - loki:grafana-source
