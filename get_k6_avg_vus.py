@@ -109,8 +109,8 @@ def parse_mem(mem_str):
 if otel0_cpus:
     parsed_otel0_cpus = [parse_cpu(cpu) for cpu in otel0_cpus]
     avg_otel0_cpu = sum(parsed_otel0_cpus) / len(parsed_otel0_cpus)
-    print(f"Average Otel 0 CPU: {avg_otel0_cpu:.2f} cores")
-    print(f"Max Otel 0 CPU: {max(parsed_otel0_cpus):.2f} cores")
+    print(f"Average Otel 0 CPU: {avg_otel0_cpu:.2f} millicores")
+    print(f"Max Otel 0 CPU: {max(parsed_otel0_cpus):.2f} millicores")
 
 if otel0_mems:
     parsed_otel0_mems = [parse_mem(mem) for mem in otel0_mems]
@@ -121,8 +121,8 @@ if otel0_mems:
 if otel2_cpus:
     parsed_otel2_cpus = [parse_cpu(cpu) for cpu in otel2_cpus]
     avg_otel2_cpu = sum(parsed_otel2_cpus) / len(parsed_otel2_cpus)
-    print(f"Average Otel 2 CPU: {avg_otel2_cpu:.2f} cores")
-    print(f"Max Otel 2 CPU: {max(parsed_otel2_cpus):.2f} cores")
+    print(f"Average Otel 2 CPU: {avg_otel2_cpu:.2f} millicores")
+    print(f"Max Otel 2 CPU: {max(parsed_otel2_cpus):.2f} millicores")
 
 if otel2_mems:
     parsed_otel2_mems = [parse_mem(mem) for mem in otel2_mems]
