@@ -77,7 +77,7 @@ for _ in range(TOTAL_ITERATIONS):
             break
     
     # Get CPU and Memory usage for otel-0 and otel2-0
-    metrics_output = run_command("sudo k8s kubectl top pod -n otel")
+    metrics_output = run_command("sudo k8s kubectl top pod -n otel2")
     otel0_cpu, otel0_mem, otel2_cpu, otel2_mem = None, None, None, None
     for line in metrics_output.splitlines():
         if 'otel-0' in line:

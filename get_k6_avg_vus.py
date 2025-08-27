@@ -41,7 +41,7 @@ def poll_queue_size():
 
 def get_pod_resources():
     while running:
-        metrics_output = run_command("sudo k8s kubectl top pod -n otel")
+        metrics_output = run_command("sudo k8s kubectl top pod -n otel2")
         otel0_cpu, otel0_mem, otel2_cpu, otel2_mem = None, None, None, None
         loki0_cpu, loki0_mem, loki1_cpu, loki1_mem, loki2_cpu, loki2_mem = None, None, None, None, None, None
         for line in metrics_output.splitlines():
