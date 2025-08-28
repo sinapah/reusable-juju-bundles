@@ -16,6 +16,7 @@ packages:
   - lxd
   - s3cmd
   - tcpdump
+  - tmux
 
 snap:
   commands:
@@ -30,6 +31,7 @@ snap:
     - snap install --classicterraform
     - snap install microceph
     - snap refresh
+    - snap install --classic go
 
 runcmd:
   - DEBIAN_FRONTEND=noninteractive apt-get remove -y landscape-client landscape-common adwaita-icon-theme humanity-icon-theme
