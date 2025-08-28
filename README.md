@@ -6,6 +6,9 @@ Some of the bundles here include:
 
 - [Mimir Exemplars]: This bundle deploys Mimir HA along with the Opentelemetry Collector. It enables the storage of exemplars in Mimir. Otelcol is included so that you can test the exemplars feature by sending an exemplar to Mimir through Otelcol. The [Python Exemplars] file can be used for this purpose.
 
+- [Loki and Otelcol over TLS]: This bundle is meant to be used when load testing Otelcol using K6 and relating Otelcol to two units of Loki over TLS. You need to have the K6 binary installed already to be able to load test Otelcol.
+
 [Observability Terraform modules]: https://github.com/canonical/observability-stack/tree/main/terraform
 [Mimir Exemplars]: https://github.com/sinapah/reusable-juju-bundles/blob/main/mimir-exemplars.py
 [Python Exemplars]: https://github.com/sinapah/reusable-juju-bundles/blob/main/mimir-exemplars.py
+[Loki and Otelcol over TLS]: https://github.com/sinapah/reusable-juju-bundles/blob/main/my-otel-loki-tls.yaml
