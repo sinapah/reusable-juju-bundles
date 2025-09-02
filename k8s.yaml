@@ -1,0 +1,34 @@
+default-base: ubuntu@24.04/stable
+applications:
+  k8s:
+    charm: k8s
+    channel: 1.32/stable
+    revision: 1300
+    resources:
+      snap-installation: 2
+    num_units: 1
+    to:
+    - "0"
+    constraints: arch=amd64 cpu-cores=2 mem=16384 root-disk=40960 virt-type=virtual-machine
+  k8s-worker:
+    charm: k8s-worker
+    channel: 1.32/stable
+    revision: 1294
+    resources:
+      snap-installation: 6
+    num_units: 1
+    to:
+    - "1"
+    constraints: arch=amd64 cpu-cores=2 mem=16384 root-disk=40960 virt-type=virtual-machine
+machines:
+  "0":
+    constraints: arch=amd64 cpu-cores=2 mem=16384 root-disk=40960 virt-type=virtual-machine
+  "1":
+    constraints: arch=amd64 cpu-cores=2 mem=16384 root-disk=40960 virt-type=virtual-machine
+relations:
+- - k8s:k8s-cluster
+  - k8s-worker:cluster
+- - k8s:containerd
+  - k8s-worker:containerd
+- - k8s:cos-worker-tokens
+  - k8s-worker:cos-tokens
