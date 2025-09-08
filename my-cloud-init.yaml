@@ -28,7 +28,7 @@ snap:
     - snap install yq
     - snap install multipass-sshfs
     - snap install --classic just
-    - snap install --classicterraform
+    - snap install --classic terraform
     - snap install microceph
     - snap refresh
     - snap install --classic go
