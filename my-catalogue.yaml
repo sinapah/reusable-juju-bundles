@@ -75,17 +75,6 @@ applications:
       data: kubernetes,1,1024M
       recovery-data: kubernetes,1,1024M
     trust: true
-  otelcol:
-    charm: opentelemetry-collector-k8s
-    channel: 2/edge
-    revision: 84
-    resources:
-      opentelemetry-collector-image: 9
-    scale: 1
-    constraints: arch=amd64
-    storage:
-      persisted: kubernetes,1,1024M
-    trust: true
   prom:
     charm: prometheus-k8s
     channel: 2/edge
@@ -122,73 +111,51 @@ applications:
       configurations: kubernetes,1,1024M
     trust: true
 relations:
-- - mimir:mimir-cluster
-  - mimir-worker:mimir-cluster
-- - mimir:s3
-  - swfs:s3-credentials
-- - loki:loki-cluster
-  - loki-worker:loki-cluster
-- - loki:s3
-  - swfs:s3-credentials
-- - grafana:grafana-dashboard
-  - mimir:grafana-dashboards-provider
-- - grafana:grafana-source
-  - mimir:grafana-source
-- - grafana:grafana-dashboard
-  - loki:grafana-dashboards-provider
-- - grafana:grafana-source
-  - loki:grafana-source
-- - mimir:logging-consumer
-  - otelcol:receive-loki-logs
-- - mimir:self-metrics-endpoint
-  - otelcol:metrics-endpoint
-- - mimir:receive-remote-write
-  - otelcol:send-remote-write
-- - loki:logging-consumer
-  - otelcol:receive-loki-logs
-- - loki:self-metrics-endpoint
-  - otelcol:metrics-endpoint
-- - loki:logging
-  - otelcol:send-loki-logs
-- - traefik:grafana-dashboard
-  - grafana:grafana-dashboard
-- - traefik:traefik-route
-  - grafana:ingress
-- - traefik:ingress
-  - loki:ingress
-- - traefik:ingress
-  - mimir:ingress
-- - traefik:metrics-endpoint
-  - otelcol:metrics-endpoint
-- - traefik:logging
-  - otelcol:receive-loki-logs
-- - otelcol:grafana-dashboards-provider
-  - grafana:grafana-dashboard
-- - alertmanager:grafana-source
-  - grafana:grafana-source
-- - alertmanager:grafana-dashboard
-  - grafana:grafana-dashboard
-- - alertmanager:alerting
-  - mimir:alertmanager
-- - alertmanager:alerting
-  - loki:alertmanager
-- - alertmanager:self-metrics-endpoint
-  - otelcol:metrics-endpoint
-- - grafana:metrics-endpoint
-  - otelcol:metrics-endpoint
-- - traefik:ingress
-  - alertmanager:ingress
-- - catalogue2:catalogue
-  - loki:catalogue
-- - catalogue2:catalogue
-  - mimir:catalogue
-- - catalogue2:ingress
-  - traefik:ingress
-- - catalogue2:catalogue
-  - alertmanager:catalogue
-- - catalogue2:catalogue
-  - grafana:catalogue
-- - prom:catalogue
-  - catalogue2:catalogue
-- - prom:ingress
-  - traefik:ingress-per-unit
+  - - mimir:mimir-cluster
+    - mimir-worker:mimir-cluster
+  - - mimir:s3
+    - swfs:s3-credentials
+  - - loki:loki-cluster
+    - loki-worker:loki-cluster
+  - - loki:s3
+    - swfs:s3-credentials
+  - - grafana:grafana-dashboard
+    - mimir:grafana-dashboards-provider
+  - - grafana:grafana-source
+    - mimir:grafana-source
+  - - grafana:grafana-dashboard
+    - loki:grafana-dashboards-provider
+  - - grafana:grafana-source
+    - loki:grafana-source
+  - - traefik:grafana-dashboard
+    - grafana:grafana-dashboard
+  - - traefik:traefik-route
+    - grafana:ingress
+  - - traefik:ingress
+    - loki:ingress
+  - - traefik:ingress
+    - mimir:ingress
+  - - alertmanager:grafana-source
+    - grafana:grafana-source
+  - - alertmanager:grafana-dashboard
+    - grafana:grafana-dashboard
+  - - alertmanager:alerting
+    - mimir:alertmanager
+  - - alertmanager:alerting
+    - loki:alertmanager
+  - - traefik:ingress
+    - alertmanager:ingress
+  - - catalogue2:catalogue
+    - loki:catalogue
+  - - catalogue2:catalogue
+    - mimir:catalogue
+  - - catalogue2:ingress
+    - traefik:ingress
+  - - catalogue2:catalogue
+    - alertmanager:catalogue
+  - - catalogue2:catalogue
+    - grafana:catalogue
+  - - prom:catalogue
+    - catalogue2:catalogue
+  - - prom:ingress
+    - traefik:ingress-per-unit
