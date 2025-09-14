@@ -30,29 +30,6 @@ applications:
     storage:
       database: kubernetes,1,1024M
     trust: true
-  loki:
-    charm: loki-coordinator-k8s
-    channel: 2/edge
-    revision: 43
-    resources:
-      nginx-image: 7
-      nginx-prometheus-exporter-image: 3
-    scale: 1
-    constraints: arch=amd64
-    trust: true
-  loki-worker:
-    charm: loki-worker-k8s
-    channel: 2/edge
-    revision: 50
-    resources:
-      loki-image: 3
-    scale: 1
-    options:
-      role-all: true
-    constraints: arch=amd64
-    storage:
-      loki-persisted: kubernetes,1,1024M
-    trust: true
   mimir:
     charm: local:mimir-coordinator-k8s-5
     resources:
@@ -115,24 +92,14 @@ relations:
     - mimir-worker:mimir-cluster
   - - mimir:s3
     - swfs:s3-credentials
-  - - loki:loki-cluster
-    - loki-worker:loki-cluster
-  - - loki:s3
-    - swfs:s3-credentials
   - - grafana:grafana-dashboard
     - mimir:grafana-dashboards-provider
   - - grafana:grafana-source
     - mimir:grafana-source
-  - - grafana:grafana-dashboard
-    - loki:grafana-dashboards-provider
-  - - grafana:grafana-source
-    - loki:grafana-source
   - - traefik:grafana-dashboard
     - grafana:grafana-dashboard
   - - traefik:traefik-route
     - grafana:ingress
-  - - traefik:ingress
-    - loki:ingress
   - - traefik:ingress
     - mimir:ingress
   - - alertmanager:grafana-source
@@ -141,12 +108,8 @@ relations:
     - grafana:grafana-dashboard
   - - alertmanager:alerting
     - mimir:alertmanager
-  - - alertmanager:alerting
-    - loki:alertmanager
   - - traefik:ingress
     - alertmanager:ingress
-  - - catalogue2:catalogue
-    - loki:catalogue
   - - catalogue2:catalogue
     - mimir:catalogue
   - - catalogue2:ingress
