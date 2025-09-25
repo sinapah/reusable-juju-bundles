@@ -11,11 +11,11 @@ applications:
     storage:
       data: kubernetes,1,1024M
     trust: true
-  catalogue2:
-    charm: local:catalogue-k8s-12
+  catalogue:
+    charm: catalogue-k8s
+    channel: 2/edge
+    revision: 102
     scale: 1
-    options:
-      override_hostname: 10.0.0.0
     constraints: arch=amd64
     trust: true
   grafana:
@@ -31,7 +31,9 @@ applications:
       database: kubernetes,1,1024M
     trust: true
   mimir:
-    charm: local:mimir-coordinator-k8s-5
+    charm: mimir-coordinator-k8s
+    channel: 2/edge
+    revision: 66
     resources:
       nginx-image: 15
       nginx-prometheus-exporter-image: 4
@@ -110,15 +112,15 @@ relations:
     - mimir:alertmanager
   - - traefik:ingress
     - alertmanager:ingress
-  - - catalogue2:catalogue
+  - - catalogue:catalogue
     - mimir:catalogue
-  - - catalogue2:ingress
+  - - catalogue:ingress
     - traefik:ingress
-  - - catalogue2:catalogue
+  - - catalogue:catalogue
     - alertmanager:catalogue
-  - - catalogue2:catalogue
+  - - catalogue:catalogue
     - grafana:catalogue
   - - prom:catalogue
-    - catalogue2:catalogue
+    - catalogue:catalogue
   - - prom:ingress
     - traefik:ingress-per-unit
