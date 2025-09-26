@@ -1,0 +1,183 @@
+bundle: kubernetes
+applications:
+  alertmanager:
+    charm: alertmanager-k8s
+    channel: 2/edge
+    revision: 179
+    resources:
+      alertmanager-image: 100
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+    trust: true
+  catalogue:
+    charm: catalogue-k8s
+    channel: 1/stable
+    revision: 87
+    base: ubuntu@20.04/stable
+    resources:
+      catalogue-image: 35
+    scale: 1
+    constraints: arch=amd64
+  grafana:
+    charm: grafana-k8s
+    channel: 2/edge
+    revision: 162
+    resources:
+      grafana-image: 71
+      litestream-image: 46
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  loki:
+    charm: loki-coordinator-k8s
+    channel: 2/edge
+    revision: 43
+    resources:
+      nginx-image: 7
+      nginx-prometheus-exporter-image: 3
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  loki-worker:
+    charm: loki-worker-k8s
+    channel: 2/edge
+    revision: 50
+    resources:
+      loki-image: 3
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  mimir:
+    charm: mimir-coordinator-k8s
+    channel: 2/edge
+    revision: 64
+    resources:
+      nginx-image: 15
+      nginx-prometheus-exporter-image: 4
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  mimir-worker:
+    charm: mimir-worker-k8s
+    channel: 2/edge
+    revision: 56
+    resources:
+      mimir-image: 16
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+      recovery-data: kubernetes,1,1024M
+    trust: true
+  otelcol:
+    charm: opentelemetry-collector-k8s
+    channel: 2/edge
+    revision: 84
+    resources:
+      opentelemetry-collector-image: 9
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      persisted: kubernetes,1,1024M
+    trust: true
+  swfs:
+    charm: seaweedfs-k8s
+    channel: latest/edge
+    revision: 7
+    resources:
+      seaweedfs-image: 1
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,10240M
+  traefik:
+    charm: traefik-k8s
+    channel: latest/edge
+    revision: 244
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    options:
+      external_hostname: ""
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - mimir:mimir-cluster
+  - mimir-worker:mimir-cluster
+- - mimir:s3
+  - swfs:s3-credentials
+- - loki:loki-cluster
+  - loki-worker:loki-cluster
+- - loki:s3
+  - swfs:s3-credentials
+- - grafana:grafana-dashboard
+  - mimir:grafana-dashboards-provider
+- - grafana:grafana-source
+  - mimir:grafana-source
+- - grafana:grafana-dashboard
+  - loki:grafana-dashboards-provider
+- - grafana:grafana-source
+  - loki:grafana-source
+- - mimir:logging-consumer
+  - otelcol:receive-loki-logs
+- - mimir:self-metrics-endpoint
+  - otelcol:metrics-endpoint
+- - mimir:receive-remote-write
+  - otelcol:send-remote-write
+- - loki:logging-consumer
+  - otelcol:receive-loki-logs
+- - loki:self-metrics-endpoint
+  - otelcol:metrics-endpoint
+- - loki:logging
+  - otelcol:send-loki-logs
+- - traefik:grafana-dashboard
+  - grafana:grafana-dashboard
+- - traefik:traefik-route
+  - grafana:ingress
+- - traefik:ingress
+  - loki:ingress
+- - traefik:ingress
+  - mimir:ingress
+- - traefik:metrics-endpoint
+  - otelcol:metrics-endpoint
+- - traefik:logging
+  - otelcol:receive-loki-logs
+- - catalogue:catalogue
+  - mimir:catalogue
+- - catalogue:catalogue
+  - loki:catalogue
+- - catalogue:ingress
+  - traefik:ingress
+- - catalogue:catalogue
+  - grafana:catalogue
+- - otelcol:grafana-dashboards-provider
+  - grafana:grafana-dashboard
+- - alertmanager:grafana-source
+  - grafana:grafana-source
+- - alertmanager:grafana-dashboard
+  - grafana:grafana-dashboard
+- - alertmanager:alerting
+  - mimir:alertmanager
+- - alertmanager:alerting
+  - loki:alertmanager
+- - alertmanager:self-metrics-endpoint
+  - otelcol:metrics-endpoint
+- - alertmanager:catalogue
+  - catalogue:catalogue
+- - grafana:metrics-endpoint
+  - otelcol:metrics-endpoint
+- - traefik:ingress
+  - alertmanager:ingress
