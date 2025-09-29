@@ -1,0 +1,37 @@
+bundle: kubernetes
+applications:
+  loki:
+    charm: local:loki-coordinator-k8s-5
+    scale: 1
+    options:
+      retention-period: 10
+    constraints: arch=amd64
+    trust: true
+  loki-worker:
+    charm: loki-worker-k8s
+    channel: 2/edge
+    revision: 50
+    resources:
+      loki-image: 3
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  s3:
+    charm: s3-integrator
+    channel: 2/edge
+    revision: 157
+    scale: 1
+    options:
+      bucket: loki
+      credentials: secret:d3d9plvmp25c76h47140
+      endpoint: http://10.181.160.194:8080
+    constraints: arch=amd64
+relations:
+- - loki:loki-cluster
+  - loki-worker:loki-cluster
+- - loki:s3
+  - s3:s3-credentials
