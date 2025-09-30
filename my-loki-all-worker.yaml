@@ -1,10 +1,10 @@
 bundle: kubernetes
 applications:
   loki:
-    charm: local:loki-coordinator-k8s-5
+    charm: loki-coordinator-k8s
     scale: 1
-    options:
-      retention-period: 10
+    channel: 2/edge
+    revision: 44
     constraints: arch=amd64
     trust: true
   loki-worker:
@@ -31,7 +31,7 @@ applications:
       endpoint: http://10.181.160.194:8080
     constraints: arch=amd64
 relations:
-- - loki:loki-cluster
-  - loki-worker:loki-cluster
-- - loki:s3
-  - s3:s3-credentials
+  - - loki:loki-cluster
+    - loki-worker:loki-cluster
+  - - loki:s3
+    - s3:s3-credentials
