@@ -8,6 +8,10 @@ Some of the bundles here include:
 
 - [Loki and Otelcol over TLS]: This bundle is meant to be used when load testing Otelcol using K6 and relating Otelcol to two units of Loki over TLS. You need to have the K6 binary installed already to be able to load test Otelcol.
 
+Some of the files here include:
+
+- make_csv.py: Used to get the output of source-wand dependencies and convert the PACKAGE and VERSION into CSV. Use like `python3 make_csv.py input=deptrees/script_exporter/deps.txt output=deptrees/script_exporter/deps.csv`
+
 [Observability Terraform modules]: https://github.com/canonical/observability-stack/tree/main/terraform
 [Mimir Exemplars]: https://github.com/sinapah/reusable-juju-bundles/blob/main/mimir-exemplars.py
 [Python Exemplars]: https://github.com/sinapah/reusable-juju-bundles/blob/main/mimir-exemplars.py
