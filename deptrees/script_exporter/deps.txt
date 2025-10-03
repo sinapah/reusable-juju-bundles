@@ -1,0 +1,455 @@
+Project: cloud.google.com/go/compute/metadata
+Version: v0.3.0
+License: 
+Repository: https://github.com/googleapis/google-cloud-go
+
+Project: github.com/alecthomas/kingpin/v2
+Version: v2.4.0
+License: 
+Repository: https://github.com/alecthomas/kingpin
+
+Project: github.com/alecthomas/units
+Version: v0.0.0-20211218093645-b94a6e3cc137
+License: 
+Repository: https://github.com/alecthomas/units
+
+Project: github.com/alecthomas/units
+Version: v0.0.0-20240927000941-0f3dac36c52b
+License: 
+Repository: https://github.com/alecthomas/units
+
+Project: github.com/beorn7/perks
+Version: v1.0.1
+License: 
+Repository: https://github.com/beorn7/perks
+
+Project: github.com/cespare/xxhash/v2
+Version: v2.3.0
+License: 
+Repository: https://github.com/cespare/xxhash
+
+Project: github.com/coreos/go-systemd/v22
+Version: v22.5.0
+License: 
+Repository: https://github.com/coreos/go-systemd
+
+Project: github.com/davecgh/go-spew
+Version: v1.1.0
+License: 
+Repository: https://github.com/davecgh/go-spew
+
+Project: github.com/davecgh/go-spew
+Version: v1.1.1
+License: 
+Repository: https://github.com/davecgh/go-spew
+
+Project: github.com/davecgh/go-spew
+Version: v1.1.2-0.20180830191138-d8f796af33cc
+License: 
+Repository: https://github.com/davecgh/go-spew
+
+Project: github.com/goccy/go-yaml
+Version: v1.18.0
+License: 
+Repository: https://github.com/goccy/go-yaml
+
+Project: github.com/godbus/dbus/v5
+Version: v5.0.4
+License: 
+Repository: https://github.com/godbus/dbus
+
+Project: github.com/golang/protobuf
+Version: v1.5.0
+License: 
+Repository: https://github.com/golang/protobuf
+
+Project: github.com/google/go-cmp
+Version: v0.5.5
+License: 
+Repository: https://github.com/google/go-cmp
+
+Project: github.com/google/go-cmp
+Version: v0.5.9
+License: 
+Repository: https://github.com/google/go-cmp
+
+Project: github.com/google/go-cmp
+Version: v0.7.0
+License: 
+Repository: https://github.com/google/go-cmp
+
+Project: github.com/jpillora/backoff
+Version: v1.0.0
+License: 
+Repository: https://github.com/jpillora/backoff
+
+Project: github.com/json-iterator/go
+Version: v1.1.12
+License: 
+Repository: https://github.com/json-iterator/go
+
+Project: github.com/julienschmidt/httprouter
+Version: v1.3.0
+License: 
+Repository: https://github.com/julienschmidt/httprouter
+
+Project: github.com/klauspost/compress
+Version: v1.18.0
+License: 
+Repository: https://github.com/klauspost/compress
+
+Project: github.com/kr/pretty
+Version: v0.3.1
+License: 
+Repository: https://github.com/kr/pretty
+
+Project: github.com/kr/text
+Version: v0.2.0
+License: 
+Repository: https://github.com/kr/text
+
+Project: github.com/kylelemons/godebug
+Version: v1.1.0
+License: 
+Repository: https://github.com/kylelemons/godebug
+
+Project: github.com/mdlayher/socket
+Version: v0.4.1
+License: 
+Repository: https://github.com/mdlayher/socket
+
+Project: github.com/mdlayher/vsock
+Version: v1.2.1
+License: 
+Repository: https://github.com/mdlayher/vsock
+
+Project: github.com/modern-go/concurrent
+Version: v0.0.0-20180306012644-bacd9c7ef1dd
+License: 
+Repository: https://github.com/modern-go/concurrent
+
+Project: github.com/modern-go/reflect2
+Version: v1.0.2
+License: 
+Repository: https://github.com/modern-go/reflect2
+
+Project: github.com/munnerz/goautoneg
+Version: v0.0.0-20191010083416-a7dc8b61c822
+License: 
+Repository: https://github.com/munnerz/goautoneg
+
+Project: github.com/mwitkow/go-conntrack
+Version: v0.0.0-20190716064945-2f068394615f
+License: 
+Repository: https://github.com/mwitkow/go-conntrack
+
+Project: github.com/pmezard/go-difflib
+Version: v1.0.0
+License: 
+Repository: https://github.com/pmezard/go-difflib
+
+Project: github.com/pmezard/go-difflib
+Version: v1.0.1-0.20181226105442-5d4384ee4fb2
+License: 
+Repository: https://github.com/pmezard/go-difflib
+
+Project: github.com/prometheus/client_golang
+Version: v1.20.4
+License: 
+Repository: https://github.com/prometheus/client_golang
+
+Project: github.com/prometheus/client_golang
+Version: v1.23.0
+License: 
+Repository: https://github.com/prometheus/client_golang
+
+Project: github.com/prometheus/client_model
+Version: v0.6.1
+License: 
+Repository: https://github.com/prometheus/client_model
+
+Project: github.com/prometheus/client_model
+Version: v0.6.2
+License: 
+Repository: https://github.com/prometheus/client_model
+
+Project: github.com/prometheus/common
+Version: v0.62.0
+License: 
+Repository: https://github.com/prometheus/common
+
+Project: github.com/prometheus/common
+Version: v0.65.0
+License: 
+Repository: https://github.com/prometheus/common
+
+Project: github.com/prometheus/exporter-toolkit
+Version: v0.14.0
+License: 
+Repository: https://github.com/prometheus/exporter-toolkit
+
+Project: github.com/prometheus/procfs
+Version: v0.15.1
+License: 
+Repository: https://github.com/prometheus/procfs
+
+Project: github.com/prometheus/procfs
+Version: v0.16.1
+License: 
+Repository: https://github.com/prometheus/procfs
+
+Project: github.com/ricoberger/script_exporter
+Version: 
+License: 
+Repository: https://github.com/ricoberger/script_exporter
+
+Project: github.com/rogpeppe/go-internal
+Version: v1.10.0
+License: 
+Repository: https://github.com/rogpeppe/go-internal
+
+Project: github.com/stretchr/objx
+Version: v0.1.0
+License: 
+Repository: https://github.com/stretchr/objx
+
+Project: github.com/stretchr/objx
+Version: v0.4.0
+License: 
+Repository: https://github.com/stretchr/objx
+
+Project: github.com/stretchr/objx
+Version: v0.5.0
+License: 
+Repository: https://github.com/stretchr/objx
+
+Project: github.com/stretchr/objx
+Version: v0.5.2
+License: 
+Repository: https://github.com/stretchr/objx
+
+Project: github.com/stretchr/testify
+Version: v1.10.0
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.11.1
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.7.1
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.8.0
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.8.2
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.8.4
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/stretchr/testify
+Version: v1.9.0
+License: 
+Repository: https://github.com/stretchr/testify
+
+Project: github.com/xhit/go-str2duration/v2
+Version: v2.1.0
+License: 
+Repository: https://github.com/xhit/go-str2duration
+
+Project: go.uber.org/goleak
+Version: v1.3.0
+License: 
+Repository: https://github.com/uber-go/goleak
+
+Project: go
+Version: 1.21.0
+License: 
+Repository: https://go
+
+Project: go
+Version: 1.22
+License: 
+Repository: https://go
+
+Project: go
+Version: 1.22.0
+License: 
+Repository: https://go
+
+Project: go
+Version: 1.23.0
+License: 
+Repository: https://go
+
+Project: go
+Version: 1.24.0
+License: 
+Repository: https://go
+
+Project: golang.org/x/crypto
+Version: v0.32.0
+License: 
+Repository: https://go.googlesource.com/crypto
+
+Project: golang.org/x/crypto
+Version: v0.38.0
+License: 
+Repository: https://go.googlesource.com/crypto
+
+Project: golang.org/x/mod
+Version: v0.17.0
+License: 
+Repository: https://go.googlesource.com/mod
+
+Project: golang.org/x/net
+Version: v0.21.0
+License: 
+Repository: https://go.googlesource.com/net
+
+Project: golang.org/x/net
+Version: v0.33.0
+License: 
+Repository: https://go.googlesource.com/net
+
+Project: golang.org/x/net
+Version: v0.40.0
+License: 
+Repository: https://go.googlesource.com/net
+
+Project: golang.org/x/net
+Version: v0.9.0
+License: 
+Repository: https://go.googlesource.com/net
+
+Project: golang.org/x/oauth2
+Version: v0.24.0
+License: 
+Repository: https://go.googlesource.com/oauth2
+
+Project: golang.org/x/oauth2
+Version: v0.30.0
+License: 
+Repository: https://go.googlesource.com/oauth2
+
+Project: golang.org/x/sync
+Version: v0.1.0
+License: 
+Repository: https://go.googlesource.com/sync
+
+Project: golang.org/x/sync
+Version: v0.10.0
+License: 
+Repository: https://go.googlesource.com/sync
+
+Project: golang.org/x/sync
+Version: v0.13.0
+License: 
+Repository: https://go.googlesource.com/sync
+
+Project: golang.org/x/sync
+Version: v0.14.0
+License: 
+Repository: https://go.googlesource.com/sync
+
+Project: golang.org/x/sys
+Version: v0.29.0
+License: 
+Repository: https://go.googlesource.com/sys
+
+Project: golang.org/x/sys
+Version: v0.32.0
+License: 
+Repository: https://go.googlesource.com/sys
+
+Project: golang.org/x/sys
+Version: v0.33.0
+License: 
+Repository: https://go.googlesource.com/sys
+
+Project: golang.org/x/sys
+Version: v0.35.0
+License: 
+Repository: https://go.googlesource.com/sys
+
+Project: golang.org/x/sys
+Version: v0.7.0
+License: 
+Repository: https://go.googlesource.com/sys
+
+Project: golang.org/x/term
+Version: v0.32.0
+License: 
+Repository: https://go.googlesource.com/term
+
+Project: golang.org/x/text
+Version: v0.21.0
+License: 
+Repository: https://go.googlesource.com/text
+
+Project: golang.org/x/text
+Version: v0.25.0
+License: 
+Repository: https://go.googlesource.com/text
+
+Project: golang.org/x/tools
+Version: v0.21.1-0.20240508182429-e35e4ccd0d2d
+License: 
+Repository: https://go.googlesource.com/tools
+
+Project: golang.org/x/xerrors
+Version: v0.0.0-20191204190536-9bdfabe68543
+License: 
+Repository: https://go.googlesource.com/xerrors
+
+Project: google.golang.org/protobuf
+Version: v1.36.1
+License: 
+Repository: https://go.googlesource.com/protobuf
+
+Project: google.golang.org/protobuf
+Version: v1.36.6
+License: 
+Repository: https://go.googlesource.com/protobuf
+
+Project: gopkg.in/check.v1
+Version: v0.0.0-20161208181325-20d25e280405
+License: 
+Repository: https://gopkg.in/check.v1
+
+Project: gopkg.in/check.v1
+Version: v1.0.0-20201130134442-10cb98267c6c
+License: 
+Repository: https://gopkg.in/check.v1
+
+Project: gopkg.in/yaml.v2
+Version: v2.4.0
+License: 
+Repository: https://gopkg.in/yaml.v2
+
+Project: gopkg.in/yaml.v3
+Version: v3.0.0-20200313102051-9f266ea9e77c
+License: 
+Repository: https://gopkg.in/yaml.v3
+
+Project: gopkg.in/yaml.v3
+Version: v3.0.1
+License: 
+Repository: https://gopkg.in/yaml.v3
+
+Project: toolchain
+Version: go1.24.0
+License: 
+Repository: https://toolchain
+
