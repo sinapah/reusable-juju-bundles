@@ -1,3 +1,4 @@
 alias ssl='sudo snap logs'
 alias otel='opentelemetry-collector'
-alias kubectl="sudo k8s kubectl"
+alias kubectl='sudo k8s kubectl'
+alias ssr='sudo snap restart'
