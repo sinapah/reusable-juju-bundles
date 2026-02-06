@@ -1,0 +1,70 @@
+bundle: kubernetes
+applications:
+  am:
+    charm: alertmanager-k8s
+    channel: 1/stable
+    revision: 180
+    base: ubuntu@20.04/stable
+    resources:
+      alertmanager-image: 100
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+    trust: true
+  graf:
+    charm: grafana-k8s
+    channel: 2/edge
+    revision: 162
+    resources:
+      grafana-image: 71
+      litestream-image: 46
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  prom:
+    charm: prometheus-k8s
+    channel: 2/edge
+    revision: 262
+    resources:
+      prometheus-image: 151
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  ssc:
+    charm: self-signed-certificates
+    channel: 1/edge
+    revision: 360
+    scale: 1
+    constraints: arch=amd64
+  trfk:
+    charm: traefik-k8s
+    channel: latest/edge
+    revision: 246
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - prom:ingress
+  - trfk:ingress-per-unit
+- - graf:ingress
+  - trfk:traefik-route
+- - ssc:certificates
+  - graf:certificates
+- - ssc:certificates
+  - trfk:certificates
+- - prom:certificates
+  - ssc:certificates
+- - am:certificates
+  - ssc:certificates
+- - am:ingress
+  - trfk:ingress

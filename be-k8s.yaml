@@ -1,0 +1,94 @@
+bundle: kubernetes
+saas:
+  remote-5a6b420bfa9445948b8cbf46c7125f41: {}
+applications:
+  graf:
+    charm: grafana-k8s
+    channel: 2/edge
+    revision: 176
+    resources:
+      grafana-image: 77
+      litestream-image: 46
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  loki:
+    charm: loki-k8s
+    channel: 2/edge
+    revision: 212
+    resources:
+      loki-image: 103
+      node-exporter-image: 4
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      active-index-directory: kubernetes,1,1024M
+      loki-chunks: kubernetes,1,1024M
+    trust: true
+  prom:
+    charm: prometheus-k8s
+    channel: 2/edge
+    revision: 279
+    resources:
+      prometheus-image: 152
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  traefik:
+    charm: traefik-k8s
+    channel: latest/stable
+    revision: 263
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - prom:ingress
+  - traefik:ingress-per-unit
+- - prom:receive-remote-write
+  - remote-5a6b420bfa9445948b8cbf46c7125f41:send-remote-write
+- - graf:ingress
+  - traefik:traefik-route
+- - prom:grafana-source
+  - graf:grafana-source
+- - prom:grafana-dashboard
+  - graf:grafana-dashboard
+- - graf:grafana-dashboard
+  - remote-5a6b420bfa9445948b8cbf46c7125f41:grafana-dashboards-provider
+- - loki:ingress
+  - traefik:ingress-per-unit
+- - loki:logging
+  - remote-5a6b420bfa9445948b8cbf46c7125f41:send-loki-logs
+- - loki:grafana-source
+  - graf:grafana-source
+--- # overlay.yaml
+applications:
+  graf:
+    offers:
+      graf:
+        endpoints:
+        - grafana-dashboard
+        acl:
+          admin: admin
+  loki:
+    offers:
+      loki:
+        endpoints:
+        - logging
+        acl:
+          admin: admin
+  prom:
+    offers:
+      prom:
+        endpoints:
+        - receive-remote-write
+        acl:
+          admin: admin

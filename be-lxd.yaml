@@ -1,0 +1,66 @@
+default-base: ubuntu@24.04/stable
+saas:
+  graf:
+    url: ck8s:admin/test.graf
+  loki:
+    url: ck8s:admin/test.loki
+  prom:
+    url: ck8s:admin/test.prom
+applications:
+  be:
+    charm: local:blackbox-exporter-operator-11
+    options:
+      probes_file: |+
+        scrape_configs:
+          - job_name: check-charmhub-connectivity
+            metrics_path: /probe
+            params:
+              module: [icmp]
+            static_configs:
+              - targets:
+                  - charmhub.io
+                  - ubuntu.com
+                  - thehackernews.com
+                  - totallynonexistentaddress.mytotallynonexistentdomain
+            relabel_configs:
+              - source_labels: [__address__]
+                target_label: __param_target
+              - source_labels: [__param_target]
+                target_label: instance
+              - replacement: 10.145.83.108:9115
+                target_label: __address__
+
+  otel:
+    charm: opentelemetry-collector
+    channel: dev/edge
+    revision: 156
+  ubuntu:
+    charm: ubuntu
+    channel: latest/stable
+    revision: 26
+    num_units: 2
+    to:
+    - "0"
+    - "1"
+    constraints: arch=amd64
+    storage:
+      block: loop,100M
+      files: rootfs,100M
+machines:
+  "0":
+    constraints: arch=amd64
+  "1":
+    constraints: arch=amd64
+relations:
+- - be:juju-info
+  - ubuntu:juju-info
+- - ubuntu:juju-info
+  - otel:juju-info
+- - otel:send-remote-write
+  - prom:receive-remote-write
+- - otel:cos-agent
+  - be:cos-agent
+- - otel:grafana-dashboards-provider
+  - graf:grafana-dashboard
+- - otel:send-loki-logs
+  - loki:logging

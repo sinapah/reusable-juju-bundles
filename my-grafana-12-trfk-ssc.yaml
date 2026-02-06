@@ -1,0 +1,59 @@
+bundle: kubernetes
+applications:
+  grafana:
+    charm: grafana-k8s
+    channel: 2/edge
+    revision: 163
+    resources:
+      grafana-image: 74
+      litestream-image: 46
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  prom:
+    charm: prometheus-k8s
+    channel: 2/edge
+    revision: 267
+    resources:
+      prometheus-image: 151
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  ssc:
+    charm: self-signed-certificates
+    channel: 1/stable
+    revision: 317
+    scale: 1
+    constraints: arch=amd64
+  trfk:
+    charm: traefik-k8s
+    channel: latest/edge
+    revision: 252
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - grafana:ingress
+  - trfk:traefik-route
+- - grafana:certificates
+  - ssc:certificates
+- - trfk:certificates
+  - ssc:certificates
+--- # overlay.yaml
+applications:
+  prom:
+    offers:
+      prom:
+        endpoints:
+        - receive-remote-write
+        acl:
+          admin: admin
