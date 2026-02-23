@@ -1,0 +1,40 @@
+bundle: kubernetes
+applications:
+  graf:
+    charm: grafana-k8s
+    channel: dev/edge
+    revision: 175
+    resources:
+      grafana-image: 77
+    scale: 3
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  pgsql:
+    charm: postgresql-k8s
+    channel: 14/stable
+    revision: 495
+    base: ubuntu@22.04/stable
+    resources:
+      postgresql-image: 165
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      pgdata: kubernetes,1,1024M
+    trust: true
+  traefik:
+    charm: traefik-k8s
+    channel: latest/stable
+    revision: 266
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - pgsql:database
+  - graf:pgsql
