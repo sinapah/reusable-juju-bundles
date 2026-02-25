@@ -1,0 +1,4 @@
+scripts:
+  - name: example
+    command: /scripts/example_metrics.sh
+    timeout: 10s
