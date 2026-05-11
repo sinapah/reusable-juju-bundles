@@ -1,0 +1,54 @@
+bundle: kubernetes
+applications:
+  grafana:
+    charm: grafana-k8s
+    channel: dev/edge
+    revision: 187
+    resources:
+      grafana-image: 78
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  pg:
+    charm: postgresql-k8s
+    channel: 14/stable
+    revision: 774
+    base: ubuntu@22.04/stable
+    resources:
+      postgresql-image: 184
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      pgdata: kubernetes,1,1024M
+    trust: true
+  pgbouncer:
+    charm: pgbouncer-k8s
+    channel: 1/stable
+    revision: 520
+    base: ubuntu@22.04/stable
+    resources:
+      pgbouncer-image: 88
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  trfk:
+    charm: traefik-k8s
+    channel: latest/edge
+    revision: 295
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - pg:database
+  - pgbouncer:backend-database
+- - grafana:pgsql
+  - pgbouncer:database
+- - grafana:ingress
+  - trfk:ingress
