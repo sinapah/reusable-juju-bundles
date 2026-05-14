@@ -1,0 +1,317 @@
+bundle: kubernetes
+applications:
+  alertmanager:
+    charm: alertmanager-k8s
+    channel: dev/edge
+    revision: 206
+    resources:
+      alertmanager-image: 102
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+    trust: true
+  ca:
+    charm: self-signed-certificates
+    channel: 1/edge
+    revision: 637
+    scale: 1
+    constraints: arch=amd64
+  catalogue:
+    charm: catalogue-k8s
+    channel: dev/edge
+    revision: 126
+    resources:
+      catalogue-image: 37
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  grafana:
+    charm: grafana-k8s
+    channel: dev/edge
+    revision: 187
+    resources:
+      grafana-image: 78
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      database: kubernetes,1,1024M
+    trust: true
+  istio-ingress-k8s:
+    charm: istio-ingress-k8s
+    channel: dev/edge
+    revision: 73
+    resources:
+      metrics-proxy-image: 3
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  istio-k8s:
+    charm: istio-k8s
+    channel: dev/edge
+    revision: 49
+    resources:
+      metrics-proxy-image: 3
+    scale: 1
+    options:
+      platform: ""
+    constraints: arch=amd64
+    trust: true
+  loki:
+    charm: loki-coordinator-k8s
+    channel: dev/edge
+    revision: 61
+    resources:
+      nginx-image: 7
+      nginx-prometheus-exporter-image: 3
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  loki-worker:
+    charm: loki-worker-k8s
+    channel: dev/edge
+    revision: 70
+    resources:
+      loki-image: 6
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      loki-persisted: kubernetes,1,1024M
+    trust: true
+  mimir:
+    charm: mimir-coordinator-k8s
+    channel: dev/edge
+    revision: 82
+    resources:
+      nginx-image: 15
+      nginx-prometheus-exporter-image: 4
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  mimir-worker:
+    charm: mimir-worker-k8s
+    channel: dev/edge
+    revision: 71
+    resources:
+      mimir-image: 17
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+      recovery-data: kubernetes,1,1024M
+    trust: true
+  otelcol:
+    charm: opentelemetry-collector-k8s
+    channel: dev/edge
+    revision: 179
+    resources:
+      opentelemetry-collector-image: 9
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      persisted: kubernetes,1,1024M
+    trust: true
+  seaweedfs:
+    charm: seaweedfs-k8s
+    channel: latest/edge
+    revision: 9
+    resources:
+      seaweedfs-image: 2
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      data: kubernetes,1,1024M
+    trust: true
+  tempo:
+    charm: tempo-coordinator-k8s
+    channel: dev/edge
+    revision: 149
+    resources:
+      nginx-image: 8
+      nginx-prometheus-exporter-image: 4
+    scale: 1
+    constraints: arch=amd64
+    trust: true
+  tempo-worker:
+    charm: tempo-worker-k8s
+    channel: dev/edge
+    revision: 103
+    resources:
+      tempo-image: 13
+    scale: 1
+    options:
+      role-all: true
+    constraints: arch=amd64
+    storage:
+      wal: kubernetes,1,1024M
+    trust: true
+  traefik:
+    charm: traefik-k8s
+    channel: latest/edge
+    revision: 295
+    base: ubuntu@20.04/stable
+    resources:
+      traefik-image: 162
+    scale: 1
+    constraints: arch=amd64
+    storage:
+      configurations: kubernetes,1,1024M
+    trust: true
+relations:
+- - mimir:receive-remote-write
+  - tempo:send-remote-write
+- - tempo:receive-datasource
+  - mimir:send-datasource
+- - tempo:receive-datasource
+  - loki:send-datasource
+- - traefik:receive-ca-cert
+  - ca:send-ca-cert
+- - tempo:s3
+  - seaweedfs:s3-credentials
+- - loki:s3
+  - seaweedfs:s3-credentials
+- - mimir:s3
+  - seaweedfs:s3-credentials
+- - loki:logging
+  - otelcol:send-loki-logs
+- - mimir:receive-remote-write
+  - otelcol:send-remote-write
+- - otelcol:ingress
+  - traefik:traefik-route
+- - mimir:charm-tracing
+  - otelcol:receive-traces
+- - otelcol:send-traces
+  - tempo:tracing
+- - alertmanager:alerting
+  - loki:alertmanager
+- - tempo:logging
+  - otelcol:receive-loki-logs
+- - loki:charm-tracing
+  - otelcol:receive-traces
+- - tempo:ingress
+  - traefik:traefik-route
+- - alertmanager:alerting
+  - mimir:alertmanager
+- - mimir:logging-consumer
+  - otelcol:receive-loki-logs
+- - loki:logging-consumer
+  - otelcol:receive-loki-logs
+- - alertmanager:catalogue
+  - catalogue:catalogue
+- - catalogue:catalogue
+  - mimir:catalogue
+- - catalogue:catalogue
+  - tempo:catalogue
+- - catalogue:ingress
+  - traefik:ingress
+- - loki:ingress
+  - traefik:ingress
+- - alertmanager:ingress
+  - traefik:ingress
+- - otelcol:metrics-endpoint
+  - mimir:self-metrics-endpoint
+- - mimir:ingress
+  - traefik:ingress
+- - otelcol:metrics-endpoint
+  - alertmanager:self-metrics-endpoint
+- - otelcol:metrics-endpoint
+  - loki:self-metrics-endpoint
+- - otelcol:metrics-endpoint
+  - tempo:metrics-endpoint
+- - catalogue:catalogue
+  - grafana:catalogue
+- - mimir:mimir-cluster
+  - mimir-worker:mimir-cluster
+- - grafana:ingress
+  - traefik:ingress
+- - alertmanager:grafana-source
+  - grafana:grafana-source
+- - grafana:charm-tracing
+  - otelcol:receive-traces
+- - grafana:grafana-source
+  - tempo:grafana-source
+- - grafana:grafana-source
+  - mimir:grafana-source
+- - grafana:grafana-source
+  - loki:grafana-source
+- - alertmanager:certificates
+  - ca:certificates
+- - ca:certificates
+  - tempo:certificates
+- - ca:certificates
+  - catalogue:certificates
+- - ca:certificates
+  - loki:certificates
+- - tempo:tempo-cluster
+  - tempo-worker:tempo-cluster
+- - ca:certificates
+  - grafana:certificates
+- - ca:certificates
+  - otelcol:receive-server-cert
+- - grafana:grafana-dashboard
+  - tempo:grafana-dashboard
+- - ca:certificates
+  - mimir:certificates
+- - grafana:grafana-dashboard
+  - mimir:grafana-dashboards-provider
+- - grafana:grafana-dashboard
+  - loki:grafana-dashboards-provider
+- - alertmanager:grafana-dashboard
+  - grafana:grafana-dashboard
+- - grafana:grafana-dashboard
+  - otelcol:grafana-dashboards-provider
+- - loki:loki-cluster
+  - loki-worker:loki-cluster
+--- # overlay.yaml
+applications:
+  alertmanager:
+    offers:
+      alertmanager-karma-dashboard:
+        endpoints:
+        - karma-dashboard
+        acl:
+          admin: admin
+  ca:
+    offers:
+      certificates:
+        endpoints:
+        - certificates
+        acl:
+          admin: admin
+      send-ca-cert:
+        endpoints:
+        - send-ca-cert
+        acl:
+          admin: admin
+  grafana:
+    offers:
+      grafana-dashboards:
+        endpoints:
+        - grafana-dashboard
+        acl:
+          admin: admin
+  loki:
+    offers:
+      loki-logging:
+        endpoints:
+        - logging
+        acl:
+          admin: admin
+  mimir:
+    offers:
+      mimir-receive-remote-write:
+        endpoints:
+        - receive-remote-write
+        acl:
+          admin: admin
+  tempo:
+    offers:
+      tempo-tracing:
+        endpoints:
+        - tracing
+        acl:
+          admin: admin
