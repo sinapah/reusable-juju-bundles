@@ -11,6 +11,8 @@ Some of the bundles here include:
 - [BE K8s]: the K8s deployment needed to receive logs and metrics from a BE deployed in LXD.
 - [BE LXD]: Otelcol, BE, Ubuntu, as well as the SaaS needed to send timeseries from Be to the backend in K8s.
 
+- PG: a bundle consisting of PgBouncer, Postgresql K8s, Grafana, and Traefik.
+
 Some of the files here include:
 
 - make_csv.py: Used to get the output of source-wand dependencies and convert the PACKAGE and VERSION into CSV. Use like `python3 make_csv.py input=deptrees/script_exporter/deps.txt output=deptrees/script_exporter/deps.csv`
