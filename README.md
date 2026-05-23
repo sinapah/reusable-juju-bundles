@@ -9,6 +9,7 @@ Some of the bundles here include:
 - [Loki and Otelcol over TLS]: This bundle is meant to be used when load testing Otelcol using K6 and relating Otelcol to two units of Loki over TLS. You need to have the K6 binary installed already to be able to load test Otelcol.
 
 - [BE K8s]: the K8s deployment needed to receive logs and metrics from a BE deployed in LXD.
+
 - [BE LXD]: Otelcol, BE, Ubuntu, as well as the SaaS needed to send timeseries from Be to the backend in K8s.
 
 - PG: a bundle consisting of PgBouncer, Postgresql K8s, Grafana, and Traefik.
