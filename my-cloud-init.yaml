@@ -87,6 +87,10 @@ runcmd:
     chmod +x /home/ubuntu/.local/bin/kgoss
 
   - |
+    # Install opencode.ai cli tool as the ubuntu user
+    sudo -u ubuntu sh -c "curl -fsSL https://opencode.ai/install | bash"
+
+  - |
     # change default shell
     sudo chsh -s /bin/zsh ubuntu
 
