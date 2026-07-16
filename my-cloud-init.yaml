@@ -23,7 +23,7 @@ snap:
     - snap install --classic --channel=1.33-classic k8s
     - snap install --classic charmcraft
     - snap install --classic rockcraft
-    - snap install jhack --channel=latest/stable
+    - snap install jhack --channel=latest/edge
     - snap install yq
     - snap install multipass-sshfs
     - snap install --classic just
