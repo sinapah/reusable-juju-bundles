@@ -89,6 +89,7 @@ runcmd:
   - |
     # Install opencode.ai cli tool as the ubuntu user
     sudo -u ubuntu sh -c "curl -fsSL https://opencode.ai/install | bash"
+    echo 'export PATH="$HOME/.opencode/bin:$PATH"' >> ~/.zshrc
 
   - |
     # change default shell
