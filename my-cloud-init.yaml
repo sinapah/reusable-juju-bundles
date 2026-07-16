@@ -110,6 +110,27 @@ runcmd:
     export IPADDR=$(ip -4 -j route get 2.2.2.2 | jq -r '.[0].prefsrc')
     echo "Using IPADDR=$IPADDR"
 
+    # Wait for the Ceph Object Gateway to actually be available
+    echo "Waiting for microceph RGW to start on $IPADDR:8080..."
+    for i in {1..30}; do
+      if curl -s "http://$IPADDR:8080" > /dev/null; then
+        echo "RGW is up and responding!"
+        break
+      fi
+      echo "Still waiting ($i/30)..."
+      sleep 2
+    done
+
+    # Setup buckets for Mimir, Loki, and Tempo
+    for BUCKET in loki mimir tempo; do                
+      s3cmd --host="$IPADDR:8080" \
+        --access_key=access-key \
+        --secret_key=secret-key \
+        --host-bucket= \
+        --no-ssl \
+        mb "s3://$BUCKET"
+    done
+
   - |
     # Setup CK8s (Canonical K8s)
     sudo k8s bootstrap
